@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class Scraper():
-    def __init__(self, driver) -> None:
+    def __init__(self, driver: webdriver) -> None:
         print('Starting Chrome driver')
         self.driver = driver
         self.axos_html_files = []
@@ -59,7 +59,7 @@ class Scraper():
                 self.intel_html_files.append(self.driver.page_source)
                 pages_left = False
 
-    def save_html(self, scraped_html, company) -> None:
+    def save_html(self, scraped_html: list[str], company: str) -> None:
         print('Writing html file of', company)
         for html in scraped_html:
             file_name = datetime.now().strftime('%Y%m%H%M%S') + '.html'
