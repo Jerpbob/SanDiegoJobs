@@ -2,11 +2,45 @@ import time
 from typing import List
 from datetime import datetime
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+class BaseScraper:
+    def __init__(self, base_url: str) -> None:
+        print('Starting Firefox driver')
+        options = Options()
+        options.add_argument('--headless')
+        self.driver = webdriver.Firefox(options=options)
+        # self.driver = webdriver.Firefox()
+        self.base_url = base_url
+
+    def connect_url(self):
+        self.driver.get(self.base_url)
+    
+    def scrape_jobs(self):
+        pass
+    
+    def quit_driver(self):
+        self.driver.quit()
+
+    def run(self):
+        '''
+        Scrapes job descriptions and links
+        '''
+        self.connect_url()
+        jobs = self.scrape_jobs()
+        self.quit_driver()
+        return jobs
+
+class WorkdayScraper(BaseScraper):
+    def __init__(self, workday_url: str) -> None:
+        super().__init__(workday_url)
+    
+    def scrape_jobs(self):
+        pass
 
 class Scraper:
     """
@@ -107,13 +141,30 @@ class Scraper:
     Intuit
     Viasat
     SanDag
-    Qualcomm
+    Qualcomm*
+    Teradata
     Amazon
+    ServiceNow
     SDGE
     General Atomics
+    Deloitte
+    Stantec
+    AECOM
+    SAIC
+    Booze Allen Hamilton
+    Sigma Defense
+    American Systems
+    Lockheed Martin
+    ServiceNow
+    Siemens
+    Northrop Grumman
+    Accenture
+    
+    
+    OneToOnline
+    USA jobs
 """
 
 if __name__ == "__main__":
-    scrape_html = Scraper(webdriver.Chrome())
-    scrape_html.run_all_scrapers()
-    scrape_html.save_all_html()
+    scrape_html = WorkdayScraper(webdriver.Firefox())
+    scrape_html.run()
